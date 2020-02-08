@@ -23,21 +23,9 @@ auth = HTTPBasicAuth()
 http = Flask(__name__)
 
 
-@auth.get_password
-def get_password(username):
-    if username == 'top':
-        return 'secret'
-    return None
-
-
-@auth.error_handler
-def unauthorized():
-    return make_response(jsonify({'error': 'Unauthorized access'}), 401)
-
-
 @http.route('/')
 def root():
-    return Response('This is a really cool app', mimetype='text/plain')
+    return Response('This is dynamic plain content', mimetype='text/plain')
 
 
 @http.route('/plain-hello')
@@ -70,6 +58,11 @@ def template():
     counter = counter + 1
     message = "Hello, World " + str(counter)
     return render_template('template.html', message=message)
+
+
+@auth.error_handler
+def unauthorized():
+    return make_response(jsonify({'error': 'Unauthorized access'}), 401)
 
 
 def main():
